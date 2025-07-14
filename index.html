@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry 的 WMC 777 - 六天七大洲七场马拉松的极限挑战</title>
+    <meta name="description" content="Henry参加World Marathon Challenge 777的完整记录，包含赛事介绍、报名信息、个人经历分享和精彩图片展示。">
+    <meta name="keywords" content="马拉松,WMC777,World Marathon Challenge,跑步,极限挑战,七大洲,Henry">
+    
+    <!-- Leaflet 地图库 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        /* GlobeVisa商务风格设计系统 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #60a5fa;
+            --light-blue: #dbeafe;
+            --dark-blue: #1e40af;
+            --gold: #f59e0b;
+            --gold-light: #fbbf24;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--light-blue) 100%);
+            color: var(--gray-800);
+            transition: all 0.3s ease;
+        }
+        
+        /* 深色模式 */
+        body.dark {
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--primary-blue) 100%);
+            color: var(--gray-100);
+        }
+        
+        header {
+            text-align: center;
+            padding: 4rem 1rem 3rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        header .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header .subtitle {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--light-blue);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        header .globe-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        header .globe-badge::before {
+            content: '🌍';
+            font-size: 1.2rem;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        body.dark nav {
+            background: var(--gray-800);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav a {
+            margin: 0.25rem 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        nav a:hover {
+            color: var(--primary-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        nav a:hover::before {
+            width: 80%;
+        }
+        
+        body.dark nav a {
+            color: var(--gray-200);
+        }
+        
+        body.dark nav a:hover {
+            color: var(--accent-blue);
+            background: rgba(96, 165, 250, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+        
+        /* GlobeVisa卡片风格 */
+        section {
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue), var(--accent-blue));
+        }
+        
+        body.dark section {
+            background: var(--gray-800);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        
+        /* 专业标题设计 */
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 2px;
+        }
+        
+        body.dark h2 {
+            color: var(--accent-blue);
+        }
+        
+        h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+        
+        body.dark h3 {
+            color: var(--accent-blue);
+        }
+        
+        h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--primary-blue);
+        }
+        
+        body.dark h4 {
+            color: var(--accent-blue);
+        }
+        
+        /* 专业段落样式 */
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        body.dark p {
+            color: var(--gray-200);
+        }
+        
+        strong {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+        
+        body.dark strong {
+            color: var(--accent-blue);
+        }
+        
+        /* 地图样式 */
+        #race-map {
+            height: 600px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(30, 58, 138, 0.2);
+            margin: 2rem 0;
+            border: 2px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        body.dark #race-map {
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+        
+        /* 表单样式 */
+        form {
+            background: var(--gray-50);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            margin: 2rem 0;
+        }
+        
+        body.dark form {
+            background: var(--gray-700);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+        
+        body.dark label {
+            color: var(--gray-200);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: var(--white);
+            margin-bottom: 1.5rem;
+        }
+        
+        body.dark input,
+        body.dark select,
+        body.dark textarea {
+            background: var(--gray-600);
+            border-color: var(--gray-500);
+            color: var(--white);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .gallery img {
+            width: 100%;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery img:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* GlobeVisa章节导航卡片 */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .chapter-card {
+            background: linear-gradient(145deg, var(--white) 0%, var(--gray-50) 100%);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(30, 58, 138, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-blue), var(--secondary-blue), var(--accent-blue));
+        }
+        
+        body.dark .chapter-card {
+            background: linear-gradient(145deg, var(--gray-800) 0%, var(--gray-700) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        .chapter-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(30, 58, 138, 0.2);
+            border-color: var(--secondary-blue);
+        }
+        
+        .chapter-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        body.dark .chapter-card h3 {
+            color: var(--accent-blue);
+        }
+        
+        /* 专业统计标签 */
+        .chapter-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.05));
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+        
+        body.dark .chapter-stats {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.15), rgba(59, 130, 246, 0.08));
+            border: 1px solid rgba(96, 165, 250, 0.25);
+        }
+        
+        .chapter-stats .stat {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            background: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1);
+        }
+        
+        body.dark .chapter-stats .stat {
+            color: var(--accent-blue);
+            background: var(--gray-700);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        .chapter-card p {
+            font-size: 1rem;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+        
+        body.dark .chapter-card p {
+            color: var(--gray-200);
+        }
+        
+        .chapter-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* GlobeVisa专业底部 */
+        footer {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="footerGrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23footerGrid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        footer p {
+            position: relative;
+            z-index: 2;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--light-blue);
+            margin: 0;
+        }
+        
+        body.dark footer {
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+        }
+        
+        /* 图片轮播样式 */
+        .carousel-container {
+            position: relative;
+            margin: 2rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--gray-900);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .carousel-slide {
+            flex: 0 0 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-900);
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+        }
+        
+        .carousel-caption h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .carousel-caption p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+        
+        /* 导航按钮 */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gray-900);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .carousel-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .carousel-prev {
+            left: 1rem;
+        }
+        
+        .carousel-next {
+            right: 1rem;
+        }
+        
+        body.dark .carousel-nav {
+            background: rgba(28, 28, 30, 0.9);
+            color: white;
+        }
+        
+        body.dark .carousel-nav:hover {
+            background: var(--gray-700);
+        }
+        
+        /* 指示器 */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            header .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            nav {
+                padding: 0.5rem;
+            }
+            
+            nav a {
+                font-size: 0.8rem;
+                padding: 0.6rem 1rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            section {
+                padding: 2rem 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            form {
+                padding: 2rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            #race-map {
+                height: 400px;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .chapter-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .carousel {
+                height: 400px;
+            }
+            
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .carousel-prev {
+                left: 0.5rem;
+            }
+            
+            .carousel-next {
+                right: 0.5rem;
+            }
+            
+            .carousel-caption {
+                padding: 2rem 1rem 1rem;
+            }
+            
+            .carousel-caption h3 {
+                font-size: 1.2rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+            to {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 600px;
+            background: var(--gray-50);
+            border-radius: 16px;
+            font-size: 1.2rem;
+            color: var(--gray-600);
+        }
+        
+        .loading::before {
+            content: '🗺️';
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Henry 的 WMC 777</h1>
+            <p class="subtitle">六天，七大洲，七场马拉松的极限挑战</p>
+            <div class="globe-badge">
+                全球马拉松征程
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#race-introduction">赛事介绍</a>
+        <a href="#race-route">征程路线</a>
+        <a href="#registration">赛事报名</a>
+        <a href="#introduction">写在开始之前</a>
+        <a href="#chapters">章节导航</a>
+        <a href="#gallery">图片展示</a>
+        <a href="#conclusion">结束语</a>
+    </nav>
+
+    <div class="container">
+        <section id="race-introduction">
+            <h2>🌍 World Marathon Challenge 777 赛事介绍</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                <div style="background: linear-gradient(135deg, var(--light-blue) 0%, rgba(59, 130, 246, 0.1) 100%); padding: 2rem; border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">🏃‍♂️ 终极挑战</h3>
+                    <p>World Marathon Challenge 777 被誉为<strong>世界上最具挑战性的马拉松赛事</strong>，参赛者需要在连续7天内，跨越7个大洲，完成7场标准马拉松（42.195公里）。</p>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%); padding: 2rem; border-radius: 16px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">⏰ 时间限制</h3>
+                    <p>每场马拉松必须在<strong>6小时20分钟</strong>内完成。这不仅考验体能，更是对意志力、时差适应能力和心理韧性的极限测试。</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 2rem; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); margin: 2rem 0;">
+                <h4 style="color: var(--success); margin-bottom: 1rem;">🏆 完赛意义</h4>
+                <p>World Marathon Challenge 777 被认为是<strong>世界上最困难的跑步挑战之一</strong>。每年全球只有不到100人敢于尝试，完赛率约为85%。完成这项挑战不仅是对个人极限的突破，更是加入了一个极其精英的全球跑者社群。</p>
+            </div>
+        </section>
+
+        <section id="race-route">
+            <h2>🗺️ 全球征程路线图</h2>
+            
+            <div style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: var(--white); padding: 2rem; border-radius: 16px; margin: 2rem 0;">
+                <h3 style="color: var(--white); margin-bottom: 1rem;">🌍 七天横跨七大洲的马拉松之旅</h3>
+                <p style="color: rgba(255, 255, 255, 0.9); margin: 0;">从南极的冰雪世界到迈阿密的海滨夜跑，跟随Henry的足迹，感受这场史诗级的全球马拉松挑战！点击地图上的标记查看每站详情。</p>
+            </div>
+            
+            <!-- 地图容器 -->
+            <div id="race-map" class="loading">
+                正在加载全球征程地图...
+            </div>
+            
+            <!-- 路线说明 -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #00d4ff; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">🏔️ 第1站：南极洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">联合冰川营地<br>-20°C到-30°C 的极地挑战<br><strong>排名：41 | 时间：~6小时</strong></p>
+                </div>
+                
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ff6b35; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #ff6b35; margin-bottom: 0.5rem;">🌍 第2站：非洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">南非开普敦<br>桌山脚下的酷热赛道<br><strong>排名：25 | 时间：5:17</strong></p>
+                </div>
+                
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #4ecdc4; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #4ecdc4; margin-bottom: 0.5rem;">🇦🇺 第3站：大洋洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">澳大利亚珀斯<br>天鹅河畔的夜跑之旅<br><strong>排名：18 | 时间：<5:00</strong></p>
+                </div>
+                
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ffa726; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #ffa726; margin-bottom: 0.5rem;">🏜️ 第4站：亚洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">阿联酋迪拜<br>EXPO 2020未来之城<br><strong>排名：34 | 时间：5:26</strong></p>
+                </div>
+                
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ba68c8; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #ba68c8; margin-bottom: 0.5rem;">🏁 第5站：欧洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">西班牙马德里<br>F1赛道500米爬升<br><strong>排名：27 | 时间：<5:00</strong></p>
+                </div>
+                
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #66bb6a; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #66bb6a; margin-bottom: 0.5rem;">🌴 第6站：南美洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">巴西福塔雷萨<br>热带海滨的炎热考验<br><strong>排名：23 | 时间：5:37</strong></p>
+                </div>
+                
+                <div style="background: var(--white); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #ef5350; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                    <h4 style="color: #ef5350; margin-bottom: 0.5rem;">🏖️ 第7站：北美洲</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--gray-600);">美国迈阿密<br>凌晨1点的海滨终点<br><strong>排名：25 | 时间：<5:00</strong></p>
+                </div>
+            </div>
+            
+            <div style="background: rgba(245, 158, 11, 0.1); padding: 2rem; border-radius: 16px; border: 1px solid rgba(245, 158, 11, 0.2); margin: 2rem 0;">
+                <h4 style="color: var(--gold); margin-bottom: 1rem;">📊 征程数据统计</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8rem; font-weight: bold; color: var(--primary-blue);">50,000+</div>
+                        <div style="font-size: 0.9rem; color: var(--gray-600);">公里飞行距离</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8rem; font-weight: bold; color: var(--primary-blue);">295.365</div>
+                        <div style="font-size: 0.9rem; color: var(--gray-600);">公里跑步距离</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8rem; font-weight: bold; color: var(--primary-blue);">60°C</div>
+                        <div style="font-size: 0.9rem; color: var(--gray-600);">温差跨度</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8rem; font-weight: bold; color: var(--primary-blue);">168</div>
+                        <div style="font-size: 0.9rem; color: var(--gray-600);">小时总用时</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="registration">
+            <h2>🏃‍♂️ World Marathon Challenge 777 赛事报名</h2>
+            
+            <div style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: var(--white); padding: 2rem; border-radius: 16px; margin: 2rem 0;">
+                <h3 style="color: var(--white); margin-bottom: 1rem;">🌟 成为极限跑者精英的一员</h3>
+                <p style="color: rgba(255, 255, 255, 0.9); margin: 0;">加入这个全球最具挑战性的马拉松赛事，在7天内征服7大洲！每年全球仅有不到100人敢于挑战，你准备好了吗？</p>
+            </div>
+
+            <form id="registrationForm">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <!-- 个人信息 -->
+                    <div>
+                        <h4 style="color: var(--primary-blue); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.5rem;">📋 个人信息</h4>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>姓名 *</label>
+                            <input type="text" name="fullName" required>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>邮箱 *</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>电话 *</label>
+                            <input type="tel" name="phone" required>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>年龄 *</label>
+                            <input type="number" name="age" min="18" max="80" required>
+                        </div>
+                    </div>
+                    
+                    <!-- 跑步经历 -->
+                    <div>
+                        <h4 style="color: var(--primary-blue); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.5rem;">🏃‍♂️ 跑步经历</h4>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>跑步年限 *</label>
+                            <select name="runningYears" required>
+                                <option value="">请选择</option>
+                                <option value="1-3年">1-3年</option>
+                                <option value="3-5年">3-5年</option>
+                                <option value="5-10年">5-10年</option>
+                                <option value="10年以上">10年以上</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>马拉松完赛次数 *</label>
+                            <input type="number" name="marathonCount" min="1" required>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>个人最佳成绩 (HH:MM:SS)</label>
+                            <input type="text" name="bestTime" placeholder="例如：04:30:15">
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label>月跑量 (公里)</label>
+                            <input type="number" name="monthlyVolume" min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 报名动机 -->
+                <div style="margin-top: 2rem;">
+                    <h4 style="color: var(--primary-blue); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.5rem;">💭 报名动机</h4>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label>为什么想参加WMC 777？*</label>
+                        <textarea name="motivation" rows="4" required style="resize: vertical;" placeholder="请分享您参加这项挑战的动机和目标..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- 提交按钮 -->
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button type="submit">
+                        🚀 提交报名申请
+                    </button>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1rem; color: var(--gray-600); font-size: 0.9rem;">
+                    报名信息将发送至组织方邮箱，我们会在3个工作日内与您联系
+                </div>
+            </form>
+        </section>
+
+        <section id="introduction">
+            <h2>写在开始之前</h2>
+            <p>2月8日，我凌晨飞到了香港。竟然工作了一天，晚上11点，开始睡觉。梦里我又跑了一个全马，跑的很慢，竟然用了6个小时，然后跑完后我醒了，看下手机时间，是早上的5am，刚好6个小时。真心是后遗症，回到我的典型世界后还不断的提醒我，刚刚过去的美好经历。</p>
+            
+            <p>我23年的6月份参加过一个类似的777，在台湾，7天7马7岛，当时的经历特别好。当时介绍我去台湾的朋友波哥，就给我推荐了这个777。然后我24年初就报名了这个赛事。</p>
+            
+            <p><strong>参赛前，我是希望我可以完赛的。只是没有想到，后面的故事会如此发生。</strong></p>
+            
+            <p>我觉得，这次的旅程就是一次把我从ai往人类拉回了很多的一次经历，谨以此文献给所有行程中认识的所有新朋友们。</p>
+        </section>
+
+        <section id="chapters">
+            <h2>章节导航</h2>
+            <div class="chapter-grid">
+                <div class="chapter-card">
+                    <h3>🏔️ 南极洲马拉松 - 初见</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 41</span>
+                        <span class="stat">时间: ~6小时</span>
+                        <span class="stat">赛道: 10圈</span>
+                    </div>
+                    <p><strong>关键时刻：</strong>4:20起床坐货机、波哥钢钉跑鞋、与Magen携手冲线后她呕吐、南极大风中的坚持</p>
+                    <p><strong>难忘细节：</strong>第一次坐货机的探险感、脱掉冲锋衣的错误决定、看永不落的夕阳</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>🌍 非洲马拉松 - 热浪来袭</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 25</span>
+                        <span class="stat">时间: 5:17</span>
+                        <span class="stat">温度: 酷热无风</span>
+                    </div>
+                    <p><strong>关键人物：</strong>何律师（咽炎病友）、ronger（年轻跑神）、Charles（神奇按摩师）</p>
+                    <p><strong>转折点：</strong>Charles站在身上按摩，从扶楼梯到腿部恢复正常的神迹</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>🇦🇺 澳洲马拉松 - 血脉觉醒</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 18</span>
+                        <span class="stat">时间: <5:00</span>
+                        <span class="stat">特色: 夜跑</span>
+                    </div>
+                    <p><strong>血脉觉醒：</strong>赵西安带飞32km、一个配速从头到尾、从未想过的好成绩</p>
+                    <p><strong>华人聚会：</strong>包子、印度朋友肩膀复位、ronger补拍冲线视频的尴尬</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>🏜️ 亚洲马拉松 - 打回原形</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 34</span>
+                        <span class="stat">时间: 5:26</span>
+                        <span class="stat">教训: +2km</span>
+                    </div>
+                    <p><strong>现实检验：</strong>跟不上赵西安、走错路多跑2km、阿新的一手烟一手手机</p>
+                    <p><strong>顾安徽血案：</strong>碳板鞋夹出血、没有倪哥水平就别穿人家鞋的教训</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>🏁 欧洲马拉松 - Just Have Fun</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 27</span>
+                        <span class="stat">时间: <5:00</span>
+                        <span class="stat">爬升: 500米</span>
+                    </div>
+                    <p><strong>三人小火车诞生：</strong>赵西安（打头）、Henry（排尾）、Yuki（kona选手）</p>
+                    <p><strong>F1赛道：</strong>间歇跑训练、中国补给站救助外国跑友、钢铁般意志吓跑ronger</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>🌴 南美洲马拉松 - 精疲力尽</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 23</span>
+                        <span class="stat">时间: 5:37</span>
+                        <span class="stat">状态: 累极</span>
+                    </div>
+                    <p><strong>巴西Fortaleza：</strong>高温暴晒潮湿三重打击、睡眠不足、腿部脚踝酸痛</p>
+                    <p><strong>永恒三人组：</strong>左边赵西安右边yuki自然组队、60岁selina的骨裂坚持</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>🏖️ 北美洲马拉松 - 离别</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">排名: 25</span>
+                        <span class="stat">时间: <5:00</span>
+                        <span class="stat">开赛: 凌晨1点</span>
+                    </div>
+                    <p><strong>最后一战：</strong>Tomomi翻盘夺冠、tough guy三个家人陪跑、Jackie 12岁女儿半马2:20</p>
+                    <p><strong>离别不舍：</strong>赵西安折返跑、yuki最后1km的理智、系统排名最后的不公</p>
+                </div>
+                
+                <div class="chapter-card">
+                    <h3>💭 写在结束以后 - 人生感悟</h3>
+                    <div class="chapter-stats">
+                        <span class="stat">社交: 社恐→社牛</span>
+                        <span class="stat">理念: Journey is reward</span>
+                        <span class="stat">收获: 无限</span>
+                    </div>
+                    <p><strong>意外发现：</strong>甄17说我是"社牛"、67岁音乐家Lisa的人生课、乌拉圭司机的一致观点</p>
+                    <p><strong>深刻理解：</strong>没有积累没有奇迹、过程才是真正目的、天然基因吻合的朋友</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>图片展示</h2>
+            
+            <!-- 图片轮播 -->
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-track">
+                        <div class="carousel-slide active">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/e3e5107b31cb65e666b001427a139b98b43bd44c6a24f32a21cd29964385f526?w=1666&h=2500" alt="Henry在非洲开普敦马拉松 - 16号参赛者奔跑中">
+                            <div class="carousel-caption">
+                                <h3>开普敦马拉松</h3>
+                                <p>Henry（16号）在非洲酷热赛道上的奔跑英姿</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/8a9ff44a9c097f4bf9bd12fd21caf6d615fd129decb46603b4fe07d37576015c?w=2500&h=1667" alt="开普敦华人团队大合影 - 桌山背景下的中国跑友们">
+                            <div class="carousel-caption">
+                                <h3>桌山下的聚会</h3>
+                                <p>开普敦华人跑友团队大合影，五星红旗飘扬</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/90bc4be8633ab0b641eff998609747c01c8f1e952e0a741647756ab158df8144?w=2000&h=2500" alt="Henry（16号）与甄17一起跑步 - 并肩作战">
+                            <div class="carousel-caption">
+                                <h3>并肩作战</h3>
+                                <p>Henry（16号）与甄17的友谊见证</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/c936caf147008eb69dd7914970a563b0a609c2e8e8f27ec8b1c967aa3cf45942?w=2000&h=2500" alt="三人小火车 - Henry和队友们的团队跑步">
+                            <div class="carousel-caption">
+                                <h3>三人小火车</h3>
+                                <p>Henry与队友们的默契配合</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/cee7aca3dcca20c8420a483f0cfaf583111e0a5190fcae66e4b3c3512925b0f3?w=2480&h=1653" alt="WMC 777完赛 - 三人组戴着完赛奖牌的胜利时刻">
+                            <div class="carousel-caption">
+                                <h3>胜利时刻</h3>
+                                <p>WMC 777完赛，三人组戴着奖牌的荣耀</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/2d0192b1b5d46ab3dddc64c04e1fc21b5e1dab42f4e41a317f960aaee0473088?w=1667&h=2500" alt="迪拜EXPO City冲线 - Henry（25号）与跑友的阿拉伯风情冲线">
+                            <div class="carousel-caption">
+                                <h3>迪拜EXPO冲线</h3>
+                                <p>Henry（25号）在阿拉伯风情背景下的冲线瞬间</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/2b2734ac0029365fbc4e6580895c649c25aeb206c4d777edde38244d1b06c42d?w=4032&h=3024" alt="城市天际线自拍 - Henry与跑友的友谊见证">
+                            <div class="carousel-caption">
+                                <h3>城市天际线</h3>
+                                <p>Henry与跑友在都市背景下的友谊自拍</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/2d93a267894a887aa122c78765599f9540aa0001eb4b699768d58a41f628ecbd?w=2480&h=1653" alt="赛后拉伸 - 蓝衣女跑友的一字马展示">
+                            <div class="carousel-caption">
+                                <h3>赛后拉伸</h3>
+                                <p>跑友展示专业的拉伸动作和运动精神</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/d023e0eda51626477a911900a516c2e3a1c3ef3641aac0cbca268999cf26b59c?w=2480&h=1653" alt="夜跑时光 - Henry（16号）在夜色中的坚持">
+                            <div class="carousel-caption">
+                                <h3>夜跑时光</h3>
+                                <p>Henry（16号）在澳洲夜色中的坚持身影</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="https://pfst.cf2.poecdn.net/base/image/1593b372c53ba287202dbe113970ca27e716a9120a13b79427483dad7c6ab5f8?w=2480&h=1653" alt="赛道补给 - 队友间的相互照顾与支持">
+                            <div class="carousel-caption">
+                                <h3>赛道补给</h3>
+                                <p>队友间相互照顾与支持的温馨瞬间</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 导航按钮 -->
+                <button class="carousel-nav carousel-prev" aria-label="上一张">‹</button>
+                <button class="carousel-nav carousel-next" aria-label="下一张">›</button>
+                
+                <!-- 指示器 -->
+                <div class="carousel-indicators">
+                    <button class="carousel-indicator active" data-slide="0"></button>
+                    <button class="carousel-indicator" data-slide="1"></button>
+                    <button class="carousel-indicator" data-slide="2"></button>
+                    <button class="carousel-indicator" data-slide="3"></button>
+                    <button class="carousel-indicator" data-slide="4"></button>
+                    <button class="carousel-indicator" data-slide="5"></button>
+                    <button class="carousel-indicator" data-slide="6"></button>
+                    <button class="carousel-indicator" data-slide="7"></button>
+                    <button class="carousel-indicator" data-slide="8"></button>
+                    <button class="carousel-indicator" data-slide="9"></button>
+                </div>
+            </div>
+
+            <!-- 原有的网格布局作为备选 -->
+            <div class="gallery-grid" style="margin-top: 3rem;">
+                <h3 style="margin-bottom: 1.5rem; color: var(--gray-600);">所有照片</h3>
+                <div class="gallery">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/e3e5107b31cb65e666b001427a139b98b43bd44c6a24f32a21cd29964385f526?w=1666&h=2500" alt="Henry在非洲开普敦马拉松 - 16号参赛者奔跑中">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/8a9ff44a9c097f4bf9bd12fd21caf6d615fd129decb46603b4fe07d37576015c?w=2500&h=1667" alt="开普敦华人团队大合影 - 桌山背景下的中国跑友们">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/90bc4be8633ab0b641eff998609747c01c8f1e952e0a741647756ab158df8144?w=2000&h=2500" alt="Henry（16号）与甄17一起跑步 - 并肩作战">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/c936caf147008eb69dd7914970a563b0a609c2e8e8f27ec8b1c967aa3cf45942?w=2000&h=2500" alt="三人小火车 - Henry和队友们的团队跑步">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/cee7aca3dcca20c8420a483f0cfaf583111e0a5190fcae66e4b3c3512925b0f3?w=2480&h=1653" alt="WMC 777完赛 - 三人组戴着完赛奖牌的胜利时刻">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/2d0192b1b5d46ab3dddc64c04e1fc21b5e1dab42f4e41a317f960aaee0473088?w=1667&h=2500" alt="迪拜EXPO City冲线 - Henry（25号）与跑友的阿拉伯风情冲线">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/2b2734ac0029365fbc4e6580895c649c25aeb206c4d777edde38244d1b06c42d?w=4032&h=3024" alt="城市天际线自拍 - Henry与跑友的友谊见证">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/2d93a267894a887aa122c78765599f9540aa0001eb4b699768d58a41f628ecbd?w=2480&h=1653" alt="赛后拉伸 - 蓝衣女跑友的一字马展示">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/d023e0eda51626477a911900a516c2e3a1c3ef3641aac0cbca268999cf26b59c?w=2480&h=1653" alt="夜跑时光 - Henry（16号）在夜色中的坚持">
+                    <img src="https://pfst.cf2.poecdn.net/base/image/1593b372c53ba287202dbe113970ca27e716a9120a13b79427483dad7c6ab5f8?w=2480&h=1653" alt="赛道补给 - 队友间的相互照顾与支持">
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>结束语</h2>
+            <p>Henry 的 WMC 777 马拉松旅程，不仅是一次运动的挑战，更是一场心灵的探索。他用这段经历重新审视了人生的意义，并结交了许多志同道合的朋友。愿每个人都能从他的故事中获得启发，勇敢追逐自己的梦想。</p>
+            
+            <div style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); color: var(--white); padding: 2rem; border-radius: 16px; margin: 2rem 0; text-align: center;">
+                <h3 style="color: var(--white); margin-bottom: 1rem;">🎉 感谢关注Henry的马拉松征程</h3>
+                <p style="color: rgba(255, 255, 255, 0.9); margin: 0; font-size: 1.1rem;">
+                    这不仅是一次跑步，更是一次人生的重新定义。<br>
+                    <strong>Journey is the reward - 过程就是奖励</strong>
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 Henry 的 WMC 777. 保留所有权利。</p>
+    </footer>
+
+    <script>
+        // 深色模式自动检测
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark');
+        }
+        
+        // 监听系统主题变化
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        });
+
+        // 地图初始化
+        function initRaceMap() {
+            try {
+                // 创建地图
+                const map = L.map('race-map').setView([20, 0], 2);
+
+                // 添加地图瓦片层
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // 马拉松站点数据
+                const raceStations = [
+                    {
+                        name: '南极洲',
+                        location: '联合冰川营地',
+                        coordinates: [-79.7667, -82.8667],
+                        day: 1,
+                        color: '#00d4ff',
+                        emoji: '🏔️',
+                        details: '海拔457米，气温-20°C到-30°C',
+                        rank: '41',
+                        time: '~6小时'
+                    },
+                    {
+                        name: '非洲',
+                        location: '南非开普敦',
+                        coordinates: [-33.9249, 18.4241],
+                        day: 2,
+                        color: '#ff6b35',
+                        emoji: '🌍',
+                        details: '桌山脚下，地中海气候',
+                        rank: '25',
+                        time: '5:17'
+                    },
+                    {
+                        name: '大洋洲',
+                        location: '澳大利亚珀斯',
+                        coordinates: [-31.9505, 115.8605],
+                        day: 3,
+                        color: '#4ecdc4',
+                        emoji: '🇦🇺',
+                        details: '夜跑，沿天鹅河畔',
+                        rank: '18',
+                        time: '<5:00'
+                    },
+                    {
+                        name: '亚洲',
+                        location: '阿联酋迪拜',
+                        coordinates: [25.2048, 55.2708],
+                        day: 4,
+                        color: '#ffa726',
+                        emoji: '🏜️',
+                        details: 'EXPO 2020展馆，沙漠气候',
+                        rank: '34',
+                        time: '5:26'
+                    },
+                    {
+                        name: '欧洲',
+                        location: '西班牙马德里',
+                        coordinates: [40.4168, -3.7038],
+                        day: 5,
+                        color: '#ba68c8',
+                        emoji: '🏁',
+                        details: 'F1赛道，海拔爬升500米',
+                        rank: '27',
+                        time: '<5:00'
+                    },
+                    {
+                        name: '南美洲',
+                        location: '巴西福塔雷萨',
+                        coordinates: [-3.7319, -38.5267],
+                        day: 6,
+                        color: '#66bb6a',
+                        emoji: '🌴',
+                        details: '热带海滨城市，高温高湿',
+                        rank: '23',
+                        time: '5:37'
+                    },
+                    {
+                        name: '北美洲',
+                        location: '美国迈阿密',
+                        coordinates: [25.7617, -80.1918],
+                        day: 7,
+                        color: '#ef5350',
+                        emoji: '🏖️',
+                        details: '凌晨1点开始，海滨夜跑',
+                        rank: '25',
+                        time: '<5:00'
+                    }
+                ];
+
+                // 添加站点标记
+                raceStations.forEach(station => {
+                    // 创建自定义标记
+                    const customIcon = L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div style="background: ${station.color}; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer;">${station.emoji}</div>`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
+                    });
+
+                    // 添加标记到地图
+                    const marker = L.marker(station.coordinates, {icon: customIcon}).addTo(map);
+
+                    // 添加弹出窗口
+                    marker.bindPopup(`
+                        <div style="text-align: center; padding: 0.5rem; min-width: 200px;">
+                            <h3 style="color: ${station.color}; margin: 0 0 0.5rem 0; font-size: 1rem;">
+                                ${station.emoji} 第${station.day}站：${station.name}
+                            </h3>
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: #333; font-size: 0.9rem;">
+                                ${station.location}
+                            </p>
+                            <p style="margin: 0 0 0.5rem 0; color: #666; font-size: 0.8rem;">
+                                ${station.details}
+                            </p>
+                            <div style="background: ${station.color}; color: white; padding: 0.3rem 0.5rem; border-radius: 6px; font-size: 0.8rem; font-weight: bold;">
+                                排名: ${station.rank} | 时间: ${station.time}
+                            </div>
+                        </div>
+                    `, {
+                        maxWidth: 250,
+                        className: 'race-popup'
+                    });
+                });
+
+                // 添加路线连线
+                const routeCoordinates = raceStations.map(station => station.coordinates);
+                
+                // 创建路线折线
+                L.polyline(routeCoordinates, {
+                    color: '#3b82f6',
+                    weight: 3,
+                    opacity: 0.7,
+                    dashArray: '8, 8'
+                }).addTo(map);
+
+                // 设置地图边界
+                const group = new L.featureGroup(raceStations.map(station => 
+                    L.marker(station.coordinates)
+                ));
+                map.fitBounds(group.getBounds().pad(0.1));
+
+                console.log('地图初始化成功！');
+            } catch (error) {
+                console.error('地图初始化失败:', error);
+                document.getElementById('race-map').innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100%; background: #f3f4f6; border-radius: 12px; flex-direction: column;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🗺️</div>
+                        <div style="font-size: 1.1rem; color: #6b7280;">地图加载中...</div>
+                        <div style="font-size: 0.9rem; color: #9ca3af; margin-top: 0.5rem;">请稍候片刻</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 图片轮播功能
+        class Carousel {
+            constructor() {
+                this.track = document.querySelector('.carousel-track');
+                this.slides = document.querySelectorAll('.carousel-slide');
+                this.prevBtn = document.querySelector('.carousel-prev');
+                this.nextBtn = document.querySelector('.carousel-next');
+                this.indicators = document.querySelectorAll('.carousel-indicator');
+                
+                if (!this.track) return; // 如果没有轮播元素就退出
+                
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.autoPlayInterval = null;
+                this.isAutoPlaying = true;
+                
+                this.init();
+            }
+            
+            init() {
+                // 绑定事件
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                
+                // 指示器点击事件
+                this.indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => this.goToSlide(index));
+                });
+                
+                // 鼠标悬停暂停自动播放
+                const carousel = document.querySelector('.carousel-container');
+                carousel.addEventListener('mouseenter', () => this.pauseAutoPlay());
+                carousel.addEventListener('mouseleave', () => this.resumeAutoPlay());
+                
+                // 键盘支持
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.prevSlide();
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                });
+                
+                // 触摸支持
+                this.addTouchSupport();
+                
+                // 开始自动播放
+                this.startAutoPlay();
+            }
+            
+            updateCarousel() {
+                // 更新轨道位置
+                const translateX = -this.currentSlide * 100;
+                this.track.style.transform = `translateX(${translateX}%)`;
+                
+                // 更新活动幻灯片
+                this.slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === this.currentSlide);
+                });
+                
+                // 更新指示器
+                this.indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+            
+            nextSlide() {
+                this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+                this.updateCarousel();
+            }
+            
+            prevSlide() {
+                this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+                this.updateCarousel();
+            }
+            
+            goToSlide(index) {
+                this.currentSlide = index;
+                this.updateCarousel();
+            }
+            
+            startAutoPlay() {
+                if (this.isAutoPlaying) {
+                    this.autoPlayInterval = setInterval(() => {
+                        this.nextSlide();
+                    }, 5000); // 5秒切换一次
+                }
+            }
+            
+            pauseAutoPlay() {
+                clearInterval(this.autoPlayInterval);
+            }
+            
+            resumeAutoPlay() {
+                if (this.isAutoPlaying) {
+                    this.startAutoPlay();
+                }
+            }
+            
+            addTouchSupport() {
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+                
+                const carousel = document.querySelector('.carousel');
+                if (!carousel) return;
+                
+                // 触摸开始
+                carousel.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    this.pauseAutoPlay();
+                });
+                
+                // 触摸移动
+                carousel.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    currentX = e.touches[0].clientX;
+                });
+                
+                // 触摸结束
+                carousel.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    const diffX = startX - currentX;
+                    const threshold = 50; // 最小滑动距离
+                    
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            this.nextSlide(); // 向左滑动，下一张
+                        } else {
+                            this.prevSlide(); // 向右滑动，上一张
+                        }
+                    }
+                    
+                    this.resumeAutoPlay();
+                });
+            }
+        }
+        
+        // 报名表单处理
+        function initRegistrationForm() {
+            const form = document.getElementById('registrationForm');
+            if (!form) return;
+            
+            const inputs = form.querySelectorAll('input, select, textarea');
+            
+            // 添加表单验证样式
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = 'var(--secondary-blue)';
+                    this.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (this.value.trim() === '' && this.required) {
+                        this.style.borderColor = '#ef4444';
+                        this.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                    } else {
+                        this.style.borderColor = 'var(--gray-200)';
+                        this.style.boxShadow = 'none';
+                    }
+                });
+            });
+            
+            // 处理表单提交
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 收集表单数据
+                const formData = new FormData(form);
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                
+                // 显示提交按钮加载状态
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '🔄 提交中...';
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                
+                // 模拟发送邮件
+                setTimeout(() => {
+                    // 构建邮件内容
+                    const emailContent = formatEmailContent(data);
+                    console.log('报名信息已收集，准备发送到 fanrui@gmail.com:');
+                    console.log(emailContent);
+                    
+                    // 显示成功消息
+                    showSuccessMessage();
+                    form.reset();
+                    
+                    // 恢复按钮状态
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }, 2000);
+            });
+        }
+        
+        // 格式化邮件内容
+        function formatEmailContent(data) {
+            return `
+【WMC 777 马拉松赛事报名申请】
+
+=== 个人信息 ===
+姓名: ${data.fullName || '未填写'}
+邮箱: ${data.email || '未填写'}
+电话: ${data.phone || '未填写'}
+年龄: ${data.age || '未填写'}
+
+=== 跑步经历 ===
+跑步年限: ${data.runningYears || '未填写'}
+马拉松完赛次数: ${data.marathonCount || '未填写'}
+个人最佳成绩: ${data.bestTime || '未填写'}
+月跑量: ${data.monthlyVolume ? data.monthlyVolume + '公里' : '未填写'}
+
+=== 报名动机 ===
+${data.motivation || '未填写'}
+
+报名时间: ${new Date().toLocaleString('zh-CN')}
+            `.trim();
+        }
+        
+        // 显示成功消息
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, var(--success), #34d399);
+                color: white;
+                padding: 2rem 3rem;
+                border-radius: 16px;
+                box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+                z-index: 10000;
+                text-align: center;
+                font-size: 1.1rem;
+                font-weight: 600;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            message.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">报名申请提交成功！</div>
+                <div style="font-size: 0.95rem; opacity: 0.9;">您的申请信息已收集完成</div>
+                <div style="font-size: 0.95rem; opacity: 0.9;">我们会在3个工作日内与您联系</div>
+            `;
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.style.animation = 'slideOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    if (document.body.contains(message)) {
+                        document.body.removeChild(message);
+                    }
+                }, 300);
+            }, 4000);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 等待地图容器渲染完成后初始化地图
+            setTimeout(() => {
+                const mapElement = document.getElementById('race-map');
+                if (mapElement) {
+                    mapElement.classList.remove('loading');
+                    mapElement.innerHTML = '';
+                    initRaceMap();
+                }
+            }, 1000);
+            
+            new Carousel();
+            initRegistrationForm();
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
